@@ -12,7 +12,7 @@ const refs = {
 refs.searchForm.addEventListener("submit", onSearch);
 refs.loadMoreButton.addEventListener("click", onLoadMore);
 
-function onSearch(e) {
+async function onSearch(e) {
     e.preventDefault();
     clearContainer();
     apiService.query = e.currentTarget.elements.searchQuery.value;
@@ -20,35 +20,54 @@ function onSearch(e) {
         return notFound();
     }
     apiService.resetPage();
-    apiService.fetchPictures().then(makePicturesMarkup);
-    refs.loadMoreButton.classList.toggle("hidden");
+    try {
+        await apiService.fetchPictures().then(makePicturesMarkup);
+        refs.loadMoreButton.classList.toggle("hidden");
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 function onLoadMore() {
     apiService.fetchPictures().then(makePicturesMarkup);
 }
 
-function makePicturesMarkup() { }
-//     return hits.map(({ }) => {
-//         return `<div class="photo-card" >
-//                 <img src="" alt="" loading="lazy" />
-//                 <div class="info">
-//                 <p class="info-item">
-//                 <b>Likes</b>
-//                 </p>
-//                 <p class="info-item">
-//                 <b>Views</b>
-//                 </p>
-//                 <p class="info-item">
-//                 <b>Comments</b>
-//                 </p>
-//                 <p class="info-item">
-//                 <b>Downloads</b>
-//                 </p>
-//                 </div>
-//                 </div>`;
-//     }).join("");
-// }
+function makePicturesMarkup(images) {
+    const markup = images
+        .map(image => {
+            return `<div class="photo-card" >
+                <img src="${item.webFormatUrl}" alt="${item.tags}" loading="lazy" />
+                <div class="info">
+                <p class="info-item">
+                <b>Likes ${item.likes}</b>
+                </p>
+                <p class="info-item">
+                <b>Views ${item.views}</b>
+                </p>
+                <p class="info-item">
+                <b>Comments ${item.comments}</b>
+                </p>
+                <p class="info-item">
+                <b>Downloads ${item.downloads}</b>
+                </p>
+                </div>
+                </div>`;
+        })
+    refs.gallery.innerHTML += markup;
+}
+
+function cleanGallery() {
+    gallery.innerHTML = '';
+    pageNumber = 1;
+    btnLoadMore.style.display = 'none';
+}
+
+
+function makePicturesMarkup(hits) {
+    hits.map((item) => {
+
+    }).join("");
+}
 
 function clearContainer() {
     refs.gallery.innerHTML = "";

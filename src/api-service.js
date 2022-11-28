@@ -5,23 +5,25 @@ export default class ApiServiceClass {
     constructor() {
         this.searchQuery = "";
         this.page = 1;
+        this.totalHits = 0;
     }
 
-    fetchPictures() {
+    async fetchPictures() {
         console.log(this);
-        return fetch(`${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`)
-            .then(r => r.json())
-            .then(data => {
-                console.log(data);
-                this.incrementPage();
-                return data.hits;
-            });
+        const r = await fetch(`${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`);
+        const data_1 = await r.json();
+        console.log(data_1);
+        this.incrementPage();
+        return data_1.hits;
     }
     incrementPage() {
         this.page += 1
     }
     resetPage() {
         this.page = 1;
+    }
+    haveMoreImages() {
+        return this.page, Math.ceil(this.totalHits / 40)
     }
     get query() {
         return this.searchQuery;
