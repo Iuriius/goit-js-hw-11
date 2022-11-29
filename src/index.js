@@ -9,22 +9,22 @@ const refs = {
   gallery: document.querySelector('.gallery'),
   more: document.querySelector('.load-more'),
 }
-refs.more.style.display = 'none';
+refs.more.style.display = "none";
 let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 let page = 1;
 
-refs.button.addEventListener('click', e => {
-  e.preventDefault();
+refs.button.addEventListener("click", event => {
+  event.preventDefault();
   cleanGallery();
   const trim = refs.input.value.trim();
-  if (trim !== '') {
+  if (trim !== "") {
     fetchPics(trim, page).then(data => {
       if (data.hits.length === 0) {
-        Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+        Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
       } else {
         makeGallery(data.hits);
         Notify.success(`Hooray! We found ${data.totalHits} images.`);
-        refs.more.style.display = 'block';
+        refs.more.style.display = "block";
         gallerySimpleLightbox.refresh();
       }
     })
@@ -44,27 +44,27 @@ function makeGallery(images) {
       <p class="info-item"><b>Downloads</b><span class="info-item-add">${image.downloads}</span></p>
       </div>
     </div>`;
-    }).join('');
+    }).join("");
   refs.gallery.innerHTML += markup;
 }
 
-refs.more.addEventListener('click', () => {
+refs.more.addEventListener("click", () => {
   page + 1;
   const trim = refs.input.value.trim();
-  refs.more.style.display = 'none';
+  refs.more.style.display = "none";
   fetchPics(trim, page).then(data => {
     if (data.hits.length === 0) {
-      Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+      Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
     } else {
       makeGallery(data.hits);
       Notify.success(`Hooray! We found ${data.totalHits} images.`);
-      refs.more.style.display = 'block';
+      refs.more.style.display = "block";
     }
   })
 })
 
 function cleanGallery() {
-  refs.gallery.innerHTML = '';
+  refs.gallery.innerHTML = "";
   page = 1;
-  refs.more.style.display = 'none';
+  refs.more.style.display = "none";
 }
