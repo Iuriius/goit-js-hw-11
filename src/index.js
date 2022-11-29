@@ -45,6 +45,7 @@ function makeGallery(images) {
       </div>
     </div>`;
     }).join("");
+  // console.log(markup);
   refs.gallery.innerHTML += markup;
 }
 
