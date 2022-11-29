@@ -52,25 +52,15 @@ function makePicturesMarkup(images) {
                 </p>
                 </div>
                 </div>`;
-        })
-    refs.gallery.innerHTML += markup;
-}
-
-function cleanGallery() {
-    gallery.innerHTML = '';
-    pageNumber = 1;
-    btnLoadMore.style.display = 'none';
-}
-
-
-function makePicturesMarkup(hits) {
-    hits.map((item) => {
-
-    }).join("");
+        }).join("");
+    console.log(markup);
+    refs.gallery.insertAdjacentHTML.beforeend += markup;
 }
 
 function clearContainer() {
-    refs.gallery.innerHTML = "";
+    refs.gallery.innerHTML = '';
+    pageNumber = 1;
+    refs.loadMoreButton.style.display = 'none';
 }
 
 function notFound() {
