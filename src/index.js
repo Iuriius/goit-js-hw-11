@@ -44,7 +44,7 @@ function makeGallery(images) {
       </div>
     </div>`;
     }).join("");
-  refs.gallery.insertAdjacentHTML += markup;
+  refs.gallery.insertAdjacentHTML('beforebegin', markup);
   gallerySimpleLightbox.refresh();
 }
 
