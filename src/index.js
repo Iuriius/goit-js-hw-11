@@ -5,15 +5,15 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
   input: document.querySelector('.input'),
-  button: document.querySelector('.button'),
   gallery: document.querySelector('.gallery'),
   more: document.querySelector('.load-more'),
+  form: document.querySelector('.search-form'),
 }
 refs.more.style.display = "none";
 let gallerySimpleLightbox = new SimpleLightbox('.gallery a');
 let page = 1;
 
-refs.button.addEventListener("click", event => {
+refs.form.addEventListener("submit", event => {
   event.preventDefault();
   cleanGallery();
   const trim = refs.input.value.trim();
@@ -21,12 +21,11 @@ refs.button.addEventListener("click", event => {
     fetchPics(trim, page).then(data => {
       if (data.hits.length === 0) {
         Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
-      } else {
-        makeGallery(data.hits);
-        Notify.success(`Hooray! We found ${data.totalHits} images.`);
-        refs.more.style.display = "block";
-        gallerySimpleLightbox.refresh();
+        return
       }
+      makeGallery(data.hits);
+      (page < Math.ceil.totalHits / 40) ? refs.more.style.display = "block" : refs.more.style.display = "none";;
+      Notify.success(`Hooray! We found ${data.totalHits} images.`);
     })
   }
 })
@@ -45,12 +44,12 @@ function makeGallery(images) {
       </div>
     </div>`;
     }).join("");
-  // console.log(markup);
-  refs.gallery.innerHTML += markup;
+  refs.gallery.insertAdjacentHTML += markup;
+  gallerySimpleLightbox.refresh();
 }
 
 refs.more.addEventListener("click", () => {
-  page + 1;
+  page += 1;
   const trim = refs.input.value.trim();
   refs.more.style.display = "none";
   fetchPics(trim, page).then(data => {
