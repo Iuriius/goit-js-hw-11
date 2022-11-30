@@ -24,7 +24,7 @@ refs.form.addEventListener("submit", event => {
         return
       }
       makeGallery(data.hits);
-      (page < Math.ceil(data.totalHits / 40)) ? refs.more.style.display = "block" : refs.more.style.display = "none";;
+      (page < Math.ceil(data.totalHits / 40)) ? refs.more.style.display = "block" : refs.more.style.display = "none";
       Notify.success(`Hooray! We found ${data.totalHits} images.`);
     })
   }
@@ -51,14 +51,13 @@ function makeGallery(images) {
 refs.more.addEventListener("click", () => {
   page += 1;
   const trim = refs.input.value.trim();
-  refs.more.style.display = "none";
   fetchPics(trim, page).then(data => {
+    (page < Math.ceil(data.totalHits / 40)) ? refs.more.style.display = "block" : refs.more.style.display = "none";
     if (data.hits.length === 0) {
       Notify.failure(`Sorry, there are no images matching your search query. Please try again.`);
     } else {
       makeGallery(data.hits);
       Notify.success(`Hooray! We found ${data.totalHits} images.`);
-      refs.more.style.display = "block";
     }
   })
 })
