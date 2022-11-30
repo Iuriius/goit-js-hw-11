@@ -24,7 +24,7 @@ refs.form.addEventListener("submit", event => {
         return
       }
       makeGallery(data.hits);
-      (page < Math.ceil.totalHits / 40) ? refs.more.style.display = "block" : refs.more.style.display = "none";;
+      (page < Math.ceil(data.totalHits / 40)) ? refs.more.style.display = "block" : refs.more.style.display = "none";;
       Notify.success(`Hooray! We found ${data.totalHits} images.`);
     })
   }
